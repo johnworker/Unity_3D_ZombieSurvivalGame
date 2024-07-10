@@ -3,9 +3,8 @@
 public class ZombieSpawner : MonoBehaviour
 {
     public GameObject zombiePrefab;
-    public Transform player;
+    public Transform[] spawnPoints;
     public float spawnTime = 5f;
-    public float spawnRadius = 10f;
 
     void Start()
     {
@@ -14,8 +13,8 @@ public class ZombieSpawner : MonoBehaviour
 
     void SpawnZombie()
     {
-        Vector3 spawnPosition = player.position + (Random.insideUnitSphere * spawnRadius);
-        spawnPosition.y = 0;
-        Instantiate(zombiePrefab, spawnPosition, Quaternion.identity);
+        int spawnIndex = Random.Range(0, spawnPoints.Length);
+        Transform spawnPoint = spawnPoints[spawnIndex];
+        Instantiate(zombiePrefab, spawnPoint.position, spawnPoint.rotation);
     }
 }

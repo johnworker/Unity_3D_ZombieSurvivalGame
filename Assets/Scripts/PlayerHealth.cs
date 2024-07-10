@@ -1,28 +1,36 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public int startingHealth = 100;
-    public int currentHealth;
-    public Slider healthSlider;
+    public int maxHealth = 100;
+    private int currentHealth;
+    public TextMeshProUGUI healthText;
 
-    void Awake()
+    void Start()
     {
-        currentHealth = startingHealth;
+        currentHealth = maxHealth;
+        UpdateHealthUI();
     }
 
-    void Update()
+    public void TakeDamage(int damage)
     {
-        healthSlider.value = currentHealth;
-    }
-
-    public void TakeDamage(int amount)
-    {
-        currentHealth -= amount;
+        currentHealth -= damage;
         if (currentHealth <= 0)
         {
-            // Handle player death
+            Die();
         }
+        UpdateHealthUI();
+    }
+
+    void UpdateHealthUI()
+    {
+        healthText.text = "Health: " + currentHealth;
+    }
+
+    void Die()
+    {
+        // 遊戲結束邏輯
     }
 }
