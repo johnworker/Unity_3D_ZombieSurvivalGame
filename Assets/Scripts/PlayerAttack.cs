@@ -2,22 +2,28 @@
 
 public class PlayerAttack : MonoBehaviour
 {
-    public GameObject bulletPrefab;
-    public Transform bulletSpawn;
-    public float bulletSpeed = 30.0f;
+    public float attackRange = 2f;
+    public int attackDamage = 10;
+    public LayerMask zombieLayer;
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetMouseButtonDown(0))
         {
-            Fire();
+            Attack();
         }
     }
 
-    void Fire()
+    void Attack()
     {
-        var bullet = (GameObject)Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
-        bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * bulletSpeed;
-        Destroy(bullet, 2.0f);
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.forward, out hit, attackRange, zombieLayer))
+        {
+            ZombieHealth zombieHealth = hit.collider.GetComponent<ZombieHealth>();
+            if (zombieHealth != null)
+            {
+                zombieHealth.TakeDamage(attackDamage);
+            }
+        }
     }
 }
